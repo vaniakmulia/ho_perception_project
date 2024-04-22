@@ -1,7 +1,7 @@
 import cv2
 
 # Initialize the video capture object
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 while True:
     # Capture frame-by-frame
@@ -29,9 +29,10 @@ while True:
     cv2.imshow('Contours', frame)
     
     # Break the loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) == 27:
         break
 
 # Release the capture object
 cap.release()
 cv2.destroyAllWindows()
+
