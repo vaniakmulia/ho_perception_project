@@ -11,10 +11,10 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Apply Gaussian blurring with larger kernel size to reduce noise
-    blurred = cv2.GaussianBlur(gray, (15, 15), 0)
+    blurred = cv2.GaussianBlur(gray, (9, 9), 0)
 
     # Apply simple thresholding to create binary image
-    _, binary = cv2.threshold(blurred, 100, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(blurred, 150, 255, cv2.THRESH_BINARY)
 
     # Apply Canny edge detection
     edges = cv2.Canny(binary, 30, 150)

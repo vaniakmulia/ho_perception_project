@@ -4,8 +4,8 @@ import numpy as np
 
 # Parse Inputs
 dict_name = "DICT_ARUCO_ORIGINAL"
-marker_id = 25
-marker_length = 0.05
+# marker_id = 25
+marker_length = 0.038
 
 # Map dictionary names to their corresponding enum values
 dict_map = {
@@ -93,8 +93,9 @@ while web_cam.isOpened():
     key_pressed = cv2.waitKey(1)
 
 
-    if key_pressed == 27:  # Press Esc to exit
+    if key_pressed == 27:
         break
+
 
 web_cam.release()
 cv2.destroyAllWindows()

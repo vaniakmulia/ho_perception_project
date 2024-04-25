@@ -31,6 +31,9 @@ def compute_rigid_transformation(position_matrix_cam, position_matrix_robot):
     A = np.vstack(T_robot_list)  # A is T_robot stacked
     B = np.vstack(T_cam_list)     # B is T_cam stacked
 
+    print("A:",A)
+    print("B:",B)
+
 
     # Use SVD method to compute the least squares solution for RTC
     U, Sigma, VT = np.linalg.svd(A, full_matrices=False)
@@ -59,7 +62,16 @@ position_matrix_robot = np.array([np.array([4, 9, 0]).reshape((3, 1)),
                                   np.array([8, 11, 0]).reshape((3, 1)),
                                   np.array([4, 13, 0]).reshape((3, 1)),
                                   np.array([6, 13, 0]).reshape((3, 1)),
-                                  np.array([8, 13, 0]).reshape((3, 1))])
+                                  np.array([8, 13, 0]).reshape((3, 1)),     
+                                  np.array([4, 9, 12]).reshape((3, 1)),
+                                  np.array([6, 9, 12]).reshape((3, 1)),
+                                  np.array([8, 9, 12]).reshape((3, 1)),
+                                  np.array([4, 11, 12]).reshape((3, 1)),
+                                  np.array([6, 11, 12]).reshape((3, 1)),
+                                  np.array([8, 11, 12]).reshape((3, 1)),
+                                  np.array([4, 13, 12]).reshape((3, 1)),
+                                  np.array([6, 13, 12]).reshape((3, 1)),
+                                  np.array([8, 13, 12]).reshape((3, 1))])
 
 print("robot position:", position_matrix_robot)
 

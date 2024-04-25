@@ -6,8 +6,8 @@ import numpy as np
 dict_name = "DICT_ARUCO_ORIGINAL"  # dictionary
 rows = 3  # number of rows
 columns = 3  # number of columns
-marker_length = 0.05  # side length of a single marker in meters
-distance = 0.02  # distance between markers in meters
+marker_length = 0.038  # side length of a single marker in meters
+distance = 0.015  # distance between markers in meters
 camera_filename = "calibration.yaml"  # name of the calibration parameters file (yaml)
 
 # Map dictionary names to their corresponding enum values
