@@ -26,7 +26,8 @@ if not web_cam.isOpened():
     exit()
 
 # Open the YAML file
-fs = cv2.FileStorage("/home/sawera/IFRoS-Master/2nd-Semester/HO-Perception/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
+fs = cv2.FileStorage("/home/alan/hands on perception mini proyect/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
+# fs = cv2.FileStorage("/home/sawera/IFRoS-Master/2nd-Semester/HO-Perception/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
 
 # Check if the file is opened successfully
 if not fs.isOpened():
