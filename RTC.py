@@ -14,6 +14,7 @@ def compute_rigid_transformation(position_matrix_cam, position_matrix_robot):
     # Reshape position matrix robot to a column matrix
     position_matrix_robot_reshaped = position_matrix_robot.reshape(-1, 1)
 
+
     # Compute (A^T A) and (A^T B)
     ATA = position_matrix_cam_rearranged.T @ position_matrix_cam_rearranged
     ATB = position_matrix_cam_rearranged.T @ position_matrix_robot_reshaped
@@ -39,37 +40,41 @@ def compute_rigid_transformation(position_matrix_cam, position_matrix_robot):
 
 def main():
     # Object position matrix with respect to robot
-    position_matrix_robot = np.array([np.array([1.9, 1.9, 0]).reshape((3, 1)),
-    np.array([5.3, 1.9, 0]).reshape((3, 1)),
-    np.array([10.6, 1.9, 0]).reshape((3, 1)),
-    np.array([1.9, 5.3, 0]).reshape((3, 1)),
-    np.array([5.3, 5.3, 0]).reshape((3, 1)),
-    np.array([10.6, 5.3, 0]).reshape((3, 1)),
-    np.array([1.9, 10.6, 0]).reshape((3, 1)),
-    np.array([5.3, 10.6, 0]).reshape((3, 1)),
-    np.array([10.6, 10.6, 0]).reshape((3, 1)),
-    np.array([1.9, 1.9, 12]).reshape((3, 1)),
-    np.array([5.3, 1.9, 12]).reshape((3, 1)),
-    np.array([10.6, 1.9, 12]).reshape((3, 1)),
-    np.array([1.9, 5.3, 12]).reshape((3, 1)),
-    np.array([5.3, 5.3, 12]).reshape((3, 1)),
-    np.array([10.6, 5.3, 12]).reshape((3, 1)),
-    np.array([1.9, 10.6, 12]).reshape((3, 1)),
-    np.array([5.3, 10.6, 12]).reshape((3, 1)),
-    np.array([10.6, 10.6, 12]).reshape((3, 1))])
+    position_matrix_robot = np.array([np.array([0.019, 0.019, 0]).reshape((3, 1)),
+    np.array([0.053, 0.019, 0]).reshape((3, 1)),
+    np.array([0.106, 0.019, 0]).reshape((3, 1)),
+    np.array([0.019, 0.053, 0]).reshape((3, 1)),
+    np.array([0.053, 0.053, 0]).reshape((3, 1)),
+    np.array([0.106, 0.053, 0]).reshape((3, 1)),
+    np.array([0.019, 0.106, 0]).reshape((3, 1)),
+    np.array([0.053, 0.106, 0]).reshape((3, 1)),
+    np.array([0.106, 0.106, 0]).reshape((3, 1)),
+    np.array([0.019, 0.019, 0.12]).reshape((3, 1)),
+    np.array([0.053, 0.019, 0.12]).reshape((3, 1)),
+    np.array([0.106, 0.019, 0.12]).reshape((3, 1)),
+    np.array([0.019, 0.053, 0.12]).reshape((3, 1)),
+    np.array([0.053, 0.053, 0.12]).reshape((3, 1)),
+    np.array([0.106, 0.053, 0.12]).reshape((3, 1)),
+    np.array([0.019, 0.106, 0.12]).reshape((3, 1)),
+    np.array([0.053, 0.106, 0.12]).reshape((3, 1)),
+    np.array([0.106, 0.106, 0.12]).reshape((3, 1))])
 
     
     print("Robot position:", position_matrix_robot)
+    print(position_matrix_robot.shape)
 
     # Load the data from the .npy file
     all_tvecs = np.load("all_tvecs.npy")
-    print("ALL_Tvecs:", all_tvecs)
 
+    
     # Reshape the data to have 18 rows and 3 columns
-    all_tvecs = all_tvecs.reshape(18, 3)
+    all_tvecs_reshaped = all_tvecs.reshape(18, 3)
+    print(all_tvecs.shape)
+    print("ALL_Tvecs:", all_tvecs_reshaped)
+
 
     # Create the object position matrix with respect to camera
-    position_matrix_cam = np.array([tvec.reshape((3, 1)) for tvec in all_tvecs])
+    position_matrix_cam = np.array([tvec.reshape((3, 1)) for tvec in all_tvecs_reshaped])
 
     # Compute the rigid transformation matrix
     Rigid_Transformation_Matrix = compute_rigid_transformation(position_matrix_cam, position_matrix_robot)
