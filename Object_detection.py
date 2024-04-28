@@ -1,7 +1,7 @@
 import cv2
 
 # Initialize the video capture object
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 while True:
     # Capture frame-by-frame
@@ -11,13 +11,13 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Apply Gaussian blurring to reduce noise
-    blurred = cv2.GaussianBlur(gray, (9, 9), 0)
+    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
 
     # Apply simple thresholding 
-    _, binary = cv2.threshold(blurred, 150, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)
 
     # Apply Canny edge detection
-    edges = cv2.Canny(binary, 30, 150)
+    edges = cv2.Canny(binary, 10, 150)
 
     # Find contours
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
