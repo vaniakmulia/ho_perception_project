@@ -26,8 +26,7 @@ if not web_cam.isOpened():
     exit()
 
 # Open the YAML file
-fs = cv2.FileStorage("/home/alan/hands on perception mini proyect/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
-# fs = cv2.FileStorage("/home/sawera/IFRoS-Master/2nd-Semester/HO-Perception/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
+fs = cv2.FileStorage("/home/sawera/IFRoS-Master/2nd-Semester/HO-Perception/HO-Perception-Project/calibration.yaml", cv2.FILE_STORAGE_READ)
 
 # Check if the file is opened successfully
 if not fs.isOpened():
@@ -43,6 +42,8 @@ fs.release()
 # Lists to store rvecs and tvecs
 all_rvecs = []
 all_tvecs = []
+marker_ids_list = []  
+
 
 # 
 while web_cam.isOpened():
@@ -58,6 +59,7 @@ while web_cam.isOpened():
     detector = cv2.aruco.ArucoDetector(dictionary, arucoParams)
     marker_corners, marker_ids , rejected_candidates = detector.detectMarkers(frame)
     cv2.aruco.drawDetectedMarkers(frame,marker_corners,marker_ids)
+    print("Marker_ids:", marker_ids)
 
 
     # If atleast one marker is detected
@@ -79,16 +81,12 @@ while web_cam.isOpened():
                 # Store rvecs and tvecs
                 all_rvecs.append(rvec)
                 all_tvecs.append(tvec)
+                marker_ids_list.append(marker_ids[i][0])  # Append the marker ID
+
 
                 print ("Rvecs stored")
                 print ("tvecs stored")
 
-                # Draw axes on the marker
-                # cv2.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvec, tvec, marker_length)
-
-                # # Display pose information
-                # pose_info = "Marker {}: X: {:.2f}m, Y: {:.2f}m, Z: {:.2f}m".format(marker_ids[i], tvec[0][0], tvec[1][0], tvec[2][0])
-                # cv2.putText(frame, pose_info, (10, 30 + i*30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
     cv2.imshow("Output Window", frame)
     key_pressed = cv2.waitKey(1)
@@ -105,7 +103,16 @@ cv2.destroyAllWindows()
 all_rvecs = np.array(all_rvecs)
 all_tvecs = np.array(all_tvecs)
 
-# Save the numpy arrays to files if needed
-np.save("all_rvecs.npy", all_rvecs)
-np.save("all_tvecs.npy", all_tvecs)
+# Convert marker_ids_list to a numpy array
+marker_ids_array = np.array(marker_ids_list).flatten()
 
+# Sort marker IDs and corresponding tvecs and rvecs
+sorted_ids = np.sort(marker_ids_array)
+sorted_indices = np.argsort(marker_ids_array)
+sorted_tvecs = all_tvecs[sorted_indices]
+sorted_rvecs = all_rvecs[sorted_indices]
+
+# Save the numpy arrays to files if needed
+np.save("rvecs_2.npy", sorted_rvecs)
+np.save("tvecs_2.npy", sorted_tvecs)
+np.save("Marker_ids_2.npy", sorted_ids)
