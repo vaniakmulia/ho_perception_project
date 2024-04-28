@@ -1,7 +1,7 @@
 import cv2
 
 # Initialize the video capture object
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 
 while True:
     # Capture frame-by-frame
@@ -10,10 +10,10 @@ while True:
     # Convert frame to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Apply Gaussian blurring with larger kernel size to reduce noise
+    # Apply Gaussian blurring to reduce noise
     blurred = cv2.GaussianBlur(gray, (9, 9), 0)
 
-    # Apply simple thresholding to create binary image
+    # Apply simple thresholding 
     _, binary = cv2.threshold(blurred, 150, 255, cv2.THRESH_BINARY)
 
     # Apply Canny edge detection

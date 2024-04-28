@@ -41,14 +41,14 @@ def compute_rigid_transformation(position_matrix_cam, position_matrix_robot):
 def main():
     # Object position matrix with respect to robot
     position_matrix_robot = np.array([np.array([0.019, 0.019, 0]).reshape((3, 1)),
-    np.array([0.072, 0.019, 0]).reshape((3, 1)),  # this is not same
+    np.array([0.072, 0.019, 0]).reshape((3, 1)),  
     np.array([0.125, 0.019, 0]).reshape((3, 1)),
     np.array([0.019, 0.072, 0]).reshape((3, 1)),
     np.array([0.072, 0.072, 0]).reshape((3, 1)),
     np.array([0.125, 0.072, 0]).reshape((3, 1)),
-    np.array([0.019, 0.125, 0]).reshape((3, 1)),   # this is not same
-    np.array([0.072, 0.125, 0]).reshape((3, 1)),   # this is not same
-    np.array([0.125, 0.125, 0]).reshape((3, 1)),   # this is not same
+    np.array([0.019, 0.125, 0]).reshape((3, 1)),  
+    np.array([0.072, 0.125, 0]).reshape((3, 1)),  
+    np.array([0.125, 0.125, 0]).reshape((3, 1)), 
     np.array([0.019, 0.019, -0.12]).reshape((3, 1)),
     np.array([0.072, 0.019, -0.12]).reshape((3, 1)),
     np.array([0.125, 0.019, -0.12]).reshape((3, 1)),
