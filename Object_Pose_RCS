@@ -1,10 +1,21 @@
 import cv2
 import numpy as np
 
+# Obtined Rigid transformation matrix RTC
+RTC = np.array([[ 0.96234677,  0.02133771, -0.05224719,  0.03211006],
+                [-0.0576901 ,  0.89363069, -0.35595705,  0.23226098],
+                [ 0.08573501,  0.22593953,  0.87087617, -0.54960689],
+                [ 0.        ,  0.        ,  0.        ,  1.        ]])
+
+# Camera intrinsic matrix obtained from Camera Calibration
+camera_matrix = np.array([[624.3784374801866, 0.0, 317.37965262889304],
+                           [0.0, 623.7788449192459, 219.41351936116175],
+                           [0.0, 0.0, 1.0]])
+
 def drawAxis(img, p_, q_, colour, scale):
     p = list(p_)
     q = list(q_)
-    angle = np.arctan2(p[1] - q[1], p[0] - q[0])  # angle in radians (Agle with the x-axis)
+    angle = np.arctan2(p[1] - q[1], p[0] - q[0])  # angle in radians (Angle with the x-axis)
     hypotenuse = np.sqrt((p[1] - q[1]) ** 2 + (p[0] - q[0]) ** 2) # Distance between points
 
     q[0] = p[0] - scale * hypotenuse * np.cos(angle)
@@ -22,24 +33,19 @@ def drawAxis(img, p_, q_, colour, scale):
 def getOrientation(pts, img):
     sz = len(pts)  # Number of points in the contour
     data_pts = np.empty((sz, 2), dtype=np.float64)
-    for i in range(data_pts.shape[0]):  #Store the contour points.
+    for i in range(data_pts.shape[0]):  # Store the contour points.
         data_pts[i, 0] = pts[i, 0, 0]
         data_pts[i, 1] = pts[i, 0, 1]
-
-        #print(data_pts)
         
     # PCA Computation
-    # Mean represents centroid.
-    # Eigen vectors represent the principal axes of the data.
-    # Eigen values represent the magnitude of variance along each eigenvector direction.
-
     mean, eigenvectors, eigenvalues = cv2.PCACompute2(data_pts, mean=np.empty((0)))
 
+    # Print major and minor axis vectors
     print("Major axis vector:", eigenvectors[0])
     print("Minor axis vector:", eigenvectors[1])
 
-
-    cntr = (int(mean[0, 0]), int(mean[0, 1]))
+    cntr = (int(mean[0, 0]), int(mean[0, 1]))  
+    print("cntr:",cntr)
 
     cv2.circle(img, cntr, 3, (255, 0, 255), 2)
     p1 = (cntr[0] + 0.02 * eigenvectors[0, 0] * eigenvalues[0, 0], cntr[1] + 0.02 * eigenvectors[0, 1] * eigenvalues[0, 0])
@@ -50,7 +56,7 @@ def getOrientation(pts, img):
 
     angle = np.arctan2(eigenvectors[0, 1], eigenvectors[0, 0])  # orientation in radians
 
-    return angle
+    return cntr, angle  #Image CS
 
 cap = cv2.VideoCapture(0)
 
@@ -67,7 +73,23 @@ while True:
         area = cv2.contourArea(c)
         if 1e2 < area < 1e5:
             cv2.drawContours(frame, [c], -1, (0, 0, 255), 2)
-            getOrientation(c, frame)
+            centroid, angle = getOrientation(c, frame)
+            
+            # Convert centroid coordinates from ICS to CCS
+            # ICS = Image Coordinate system
+            # CCS = Camera Coordinate system
+            centroid_ICS = np.array([[centroid[0]], [centroid[1]], [1]]) 
+            print("ICS:", centroid_ICS)
+            centroid_normalized = np.dot(np.linalg.inv(camera_matrix), centroid_ICS)
+            centroid_normalized /= centroid_normalized[2]  # Normalize to obtain homogeneous coordinates
+            centroid_CCS = (centroid_normalized[0], centroid_normalized[1])
+            print("CCS:", centroid_CCS)
+
+            # Convert object pose from camera coordinates to robot coordinates
+            object_pose_camera = np.array([centroid_CCS[0][0], centroid_CCS[1][0], angle, 1])
+            object_pose_robot = np.dot(RTC, object_pose_camera)
+            object_pose_robot = object_pose_robot[:3]  # Extract (x, y, angle) in robot coordinates
+            print("Object Pose WCS:",object_pose_robot)
 
     cv2.imshow('Contours', frame)
 

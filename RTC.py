@@ -67,6 +67,7 @@ def main():
     all_tvecs = np.load("All_tvecs.npy")
     print("ALL_Tvecs:", all_tvecs)
 
+
     # Reshape the data to have 18 rows and 3 columns
     all_tvecs_reshaped = all_tvecs.reshape(18, 3)
     print(all_tvecs.shape)
