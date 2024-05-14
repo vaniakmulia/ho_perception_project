@@ -81,15 +81,19 @@ while True:
             centroid_ICS = np.array([[centroid[0]], [centroid[1]], [1]]) 
             print("ICS:", centroid_ICS)
             centroid_normalized = np.dot(np.linalg.inv(camera_matrix), centroid_ICS)
+            print("cn:", centroid_normalized)
             centroid_normalized /= centroid_normalized[2]  # Normalize to obtain homogeneous coordinates
-            centroid_CCS = (centroid_normalized[0], centroid_normalized[1])
-            print("CCS:", centroid_CCS)
 
-            # Convert object pose from camera coordinates to robot coordinates
-            object_pose_camera = np.array([centroid_CCS[0][0], centroid_CCS[1][0], angle, 1])
-            object_pose_robot = np.dot(RTC, object_pose_camera)
-            object_pose_robot = object_pose_robot[:3]  # Extract (x, y, angle) in robot coordinates
+            # Add the depth information to form the 3D point
+            z = 0.12  # Depth value in meters
+            centroid_normalized_3d = np.array([centroid_normalized[0][0], centroid_normalized[1][0], z, 1])
+            print("CCS:", centroid_normalized_3d)
+
+            # Convert the 3D point from camera coordinates to robot coordinates
+            object_pose_robot = np.dot(RTC, centroid_normalized_3d)
+            object_pose_robot = object_pose_robot[:3]  # Extract (x, y, z) in robot coordinates
             print("Object Pose WCS:",object_pose_robot)
+
 
     cv2.imshow('Contours', frame)
 
