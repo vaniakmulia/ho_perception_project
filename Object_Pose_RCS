@@ -58,7 +58,8 @@ def getOrientation(pts, img):
 
     return cntr, angle  #Image CS
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
+image_counter = 0
 
 while True:
     ret, frame = cap.read()
@@ -79,26 +80,30 @@ while True:
             # ICS = Image Coordinate system
             # CCS = Camera Coordinate system
             centroid_ICS = np.array([[centroid[0]], [centroid[1]], [1]]) 
-            print("ICS:", centroid_ICS)
+            # print("ICS:", centroid_ICS)
             centroid_normalized = np.dot(np.linalg.inv(camera_matrix), centroid_ICS)
-            print("cn:", centroid_normalized)
+            # print("cn:", centroid_normalized)
             centroid_normalized /= centroid_normalized[2]  # Normalize to obtain homogeneous coordinates
 
             # Add the depth information to form the 3D point
-            z = 0.12  # Depth value in meters
+            z = 0.34  # Depth value in meters
             centroid_normalized_3d = np.array([centroid_normalized[0][0], centroid_normalized[1][0], z, 1])
-            print("CCS:", centroid_normalized_3d)
+            # print("CCS:", centroid_normalized_3d)
 
             # Convert the 3D point from camera coordinates to robot coordinates
             object_pose_robot = np.dot(RTC, centroid_normalized_3d)
             object_pose_robot = object_pose_robot[:3]  # Extract (x, y, z) in robot coordinates
             print("Object Pose WCS:",object_pose_robot)
 
-
     cv2.imshow('Contours', frame)
-
-    if cv2.waitKey(1) == 27:
+    
+    key = cv2.waitKey(1)
+    if key == 27:  # Press Esc to exit
         break
+    elif key == ord('c'):  # Press 'c' to save the image
+        image_counter += 1
+        filename = 'pose_estimation_{}.png'.format(image_counter)
+        cv2.imwrite(filename, frame)
 
 cap.release()
 cv2.destroyAllWindows()
