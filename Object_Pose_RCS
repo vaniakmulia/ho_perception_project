@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-# Obtined Rigid transformation matrix RTC
+# Obtained Rigid transformation matrix RTC
 RTC = np.array([[ 0.96234677,  0.02133771, -0.05224719,  0.03211006],
                 [-0.0576901 ,  0.89363069, -0.35595705,  0.23226098],
                 [ 0.08573501,  0.22593953,  0.87087617, -0.54960689],
@@ -30,6 +30,7 @@ def drawAxis(img, p_, q_, colour, scale):
     p[1] = q[1] + 9 * np.sin(angle - np.pi / 4)
     cv2.line(img, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv2.LINE_AA)
 
+
 def getOrientation(pts, img):
     sz = len(pts)  # Number of points in the contour
     data_pts = np.empty((sz, 2), dtype=np.float64)
@@ -41,24 +42,23 @@ def getOrientation(pts, img):
     mean, eigenvectors, eigenvalues = cv2.PCACompute2(data_pts, mean=np.empty((0)))
 
     # Print major and minor axis vectors
-    print("Major axis vector:", eigenvectors[0])
-    print("Minor axis vector:", eigenvectors[1])
+    #int("Minor axis vector:", eigenvectors[1])
 
     cntr = (int(mean[0, 0]), int(mean[0, 1]))  
-    print("cntr:",cntr)
+    #print("cntr:", cntr)
 
     cv2.circle(img, cntr, 3, (255, 0, 255), 2)
     p1 = (cntr[0] + 0.02 * eigenvectors[0, 0] * eigenvalues[0, 0], cntr[1] + 0.02 * eigenvectors[0, 1] * eigenvalues[0, 0])
     p2 = (cntr[0] - 0.02 * eigenvectors[1, 0] * eigenvalues[1, 0], cntr[1] - 0.02 * eigenvectors[1, 1] * eigenvalues[1, 0])
     
-    drawAxis(img, cntr, p1, (0, 255, 0), 1)
-    drawAxis(img, cntr, p2, (255, 255, 0), 1)
+    drawAxis(img, cntr, p1, (0, 255, 0), 1)  # Major Axis (Green)
+    drawAxis(img, cntr, p2, (255, 255, 0), 1)  # Minor Axis (Blue)
 
     angle = np.arctan2(eigenvectors[0, 1], eigenvectors[0, 0])  # orientation in radians
 
-    return cntr, angle  #Image CS
+    return cntr, eigenvectors[0], angle  # Return the major axis vector along with the centroid
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 image_counter = 0
 
 while True:
@@ -74,26 +74,30 @@ while True:
         area = cv2.contourArea(c)
         if 1e2 < area < 1e5:
             cv2.drawContours(frame, [c], -1, (0, 0, 255), 2)
-            centroid, angle = getOrientation(c, frame)
+            centroid, major_axis_vector, angle = getOrientation(c, frame)
             
             # Convert centroid coordinates from ICS to CCS
-            # ICS = Image Coordinate system
-            # CCS = Camera Coordinate system
-            centroid_ICS = np.array([[centroid[0]], [centroid[1]], [1]]) 
-            # print("ICS:", centroid_ICS)
+            centroid_ICS = np.array([[centroid[0]], [centroid[1]], [1]])
             centroid_normalized = np.dot(np.linalg.inv(camera_matrix), centroid_ICS)
-            # print("cn:", centroid_normalized)
             centroid_normalized /= centroid_normalized[2]  # Normalize to obtain homogeneous coordinates
 
             # Add the depth information to form the 3D point
             z = 0.34  # Depth value in meters
             centroid_normalized_3d = np.array([centroid_normalized[0][0], centroid_normalized[1][0], z, 1])
-            # print("CCS:", centroid_normalized_3d)
 
             # Convert the 3D point from camera coordinates to robot coordinates
             object_pose_robot = np.dot(RTC, centroid_normalized_3d)
             object_pose_robot = object_pose_robot[:3]  # Extract (x, y, z) in robot coordinates
-            print("Object Pose WCS:",object_pose_robot)
+            print("Object Position RCS:", object_pose_robot)
+
+            # Convert the major axis vector to the camera frame
+            major_axis_ICS = np.array([[major_axis_vector[0]], [major_axis_vector[1]], [0]])
+            major_axis_CCS = np.dot(np.linalg.inv(camera_matrix), major_axis_ICS)
+            major_axis_CCS_3d = np.array([major_axis_CCS[0][0], major_axis_CCS[1][0], 0, 0])  # Assume z=0 for the axis vector
+
+            # Transform the major axis vector from the camera frame to the robot frame
+            major_axis_robot = np.dot(RTC[:3, :3], major_axis_CCS_3d[:3])
+            print("Object Orientation RCS:", major_axis_robot)
 
     cv2.imshow('Contours', frame)
     
