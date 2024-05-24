@@ -49,9 +49,9 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 
 ### Prerequisites
 Required libraries 
-OpenCV, version: 4.9.0
-NumPy,  version : 1.24.4
-Matplotlib version: 3.7.5
+OpenCV, version: 4.9.0  
+NumPy,  version: 1.24.4  
+Matplotlib version: 3.7.5  
 
 ### How to run the Project
 The project can be run in two ways:
