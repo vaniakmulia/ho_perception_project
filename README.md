@@ -45,7 +45,7 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 ### 10. `calibration.yaml`
 - **Purpose:** Configuration file storing camera calibration parameters.
 
-## Getting Started
+### Getting Started
 
 ### Prerequisites
 Required libraries  
@@ -63,15 +63,23 @@ Navigate to the project directory
 
 Open Terminal
 
-## Command to run camera calibration file
+### Command to run camera calibration file
+```bash
 python3 Camera_calibration.py
+```
+## Command to run the robot calibration file
+```bash
+python3 Robot_calibration.py
+```
 
-## Command to run object estimation file
-python3 Object_Pose_Estimation.py
 
 ## Command to run camera pose file
+```bash
 python3 Camera_pose.py
+```
 
-## Command to run the robot calibration file
-python3 Robot_calibration.py
+### Command to run object pose estimation file
+```bash
+python3 Object_Pose_Estimation.py
+```
 
