@@ -18,7 +18,7 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 - **Purpose:** Stores translation vectors for all markers.
 
 ### 5. `Camera_calibration.py`
-This code is responsible for camera calibration. It uses OpenCV and Numpy libraries to perform calibration using ArUco markers. The code captures frames from webcam for ArUco marker detection. Detected marker data is used for calibration. Lastly, the camera calibrated parameters are saved to a YAML file.
+This code is responsible for camera calibration. It uses OpenCV and Numpy libraries to perform calibration using ArUco markers. The code captures frames from the webcam for ArUco marker detection. Detected marker data is used for calibration. Lastly, the camera-calibrated parameters are saved to a YAML file.
 ### 6. `Camera_pose.py`
 camera
 ### 7. `Object_Pose_Estimation.py`
@@ -37,7 +37,7 @@ camera
   - Aligns the robot's positional data with the camera's data.
 
 ### 10. `calibration.yaml`
-- **Purpose:** Configuration file storing camera calibration parameters.
+This fil contains the camera calibration parameters obtained from the camera calibration file.
 
 ### Getting Started
 
