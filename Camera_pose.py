@@ -112,7 +112,7 @@ sorted_indices = np.argsort(marker_ids_array)
 sorted_tvecs = all_tvecs[sorted_indices]
 sorted_rvecs = all_rvecs[sorted_indices]
 
-# Save the numpy arrays to files if needed
-np.save("rvecs_2.npy", sorted_rvecs)
-np.save("tvecs_2.npy", sorted_tvecs)
-np.save("Marker_ids_2.npy", sorted_ids)
+# Save the numpy arrays
+np.save("All_rvecs.npy", sorted_rvecs)
+np.save("All_tvecs.npy", sorted_tvecs)
+np.save("Marker_ids.npy", sorted_ids)
