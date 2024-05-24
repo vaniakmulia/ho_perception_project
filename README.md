@@ -18,15 +18,9 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 - **Purpose:** Stores translation vectors for all markers.
 
 ### 5. `Camera_calibration.py`
-- **Purpose:** Script for camera calibration.
-- **Functions:**
-  - Calibrates the camera using images of a known calibration pattern.
-
+This code is responsible for camera calibration. It uses OpenCV and Numpy libraries to perform calibration using ArUco markers. The code captures frames from webcam for ArUco marker detection. Detected marker data is used for calibration. Lastly, the camera calibrated parameters are saved to a YAML file.
 ### 6. `Camera_pose.py`
-- **Purpose:** Determines the camera's pose relative to the observed scene.
-- **Functions:**
-  - Estimates the camera's position and orientation.
-
+camera
 ### 7. `Object_Pose_Estimation.py`
 - **Purpose:** Estimates the pose of objects in the scene.
 - **Functions:**
