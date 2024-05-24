@@ -6,38 +6,33 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 ## Contents
 
 ### 1. `images/`
-- **Purpose:** Directory containing images used for testing and calibration.
+This Directory contains the images used for the camera calibration.
 
 ### 2. `All_Marker_ids.npy`
-- **Purpose:** Stores all marker IDs used in the project.
+This file contains the ArUco marker IDs used associated with the tvecs and rvecs from the camera pose program.
 
 ### 3. `All_rvecs.npy`
-- **Purpose:** Stores rotation vectors for all markers.
+This file contains the rotation vectors obtained from the camera pose program.
 
 ### 4. `All_tvecs.npy`
-- **Purpose:** Stores translation vectors for all markers.
+This file contains the translation vectors obtained from the camera pose program.
 
 ### 5. `Camera_calibration.py`
 This code is responsible for camera calibration. It uses OpenCV and Numpy libraries to perform calibration using ArUco markers. The code captures frames from the webcam for ArUco marker detection. Detected marker data is used for calibration. Lastly, the camera-calibrated parameters are saved to a YAML file.
-### 6. `Camera_pose.py`
-camera
-### 7. `Object_Pose_Estimation.py`
-- **Purpose:** Estimates the pose of objects in the scene.
-- **Functions:**
-  - Captures and computes the 3D pose of objects using detected markers.
 
-### 8. `Object_detection.py`
-- **Purpose:** Detects objects within images.
-- **Functions:**
-  - Implements algorithms to identify and locate objects.
+### 6. `Camera_pose.py`
+
+This code uses the ArUco module to implement augmented reality for obtaining camera pose. It opens the camera feed, detects ArUco markers, and estimates their poses using the **solvePnP()** function. Lastly, the code sorts and saves the obtained tvecs (translation vector) and rvecs (rotation vector) corresponding to the ArUco marker IDs.
+
+### 7. `Object_Pose_Estimation.py`
+This code is responsible for estimating the pose of the detected object in the robot’s coordinate system based on its observation from the camera. Here The rigid transformation matrix (RTC) obtained from robot calibration and the camera matrix obtained from camera calibration are used. The program captures the video frame  and processes them to detect contours, and for each contour of a significant area, calculates its orientation and centroid using Principal component analysis (PCA). The pose of the object is transformed into the camera coordinate system and then into the robot coordinate system. The object's pose and major axis are updated and visualized in a 3D plot using matplotlib library. The script also draws axes on the original frame for visualization.
+
 
 ### 9. `Robot_calibration.py`
-- **Purpose:** Calibrates the robot's coordinate system with the camera's.
-- **Functions:**
-  - Aligns the robot's positional data with the camera's data.
+This code is used to calculate the  rigid transformation matrix between two sets of 3D coordinates, one  observed by a camera and another by a robot. Here the robot points are defined as well as **All_tvecs.npy** obtained from the camera pose is used for loading camera data. The result of this code is a transformation matrix. This matrix allows for the conversion of points from the camera's coordinate system to the robot's coordinate system.
 
 ### 10. `calibration.yaml`
-This fil contains the camera calibration parameters obtained from the camera calibration file.
+This file contains the camera calibration parameters obtained from the camera calibration file.
 
 ### Getting Started
 
@@ -65,7 +60,6 @@ python3 Camera_calibration.py
 ```bash
 python3 Robot_calibration.py
 ```
-
 
 ## Command to run camera pose file
 ```bash
