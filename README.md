@@ -48,10 +48,10 @@ This project focuses on [brief description of the project's main goal, e.g., obj
 ## Getting Started
 
 ### Prerequisites
-Required libraries 
+Required libraries  
 OpenCV, version: 4.9.0  
 NumPy,  version: 1.24.4  
-Matplotlib version: 3.7.5  
+Matplotlib, version: 3.7.5  
 
 ### How to run the Project
 The project can be run in two ways:
@@ -63,15 +63,15 @@ Navigate to the project directory
 
 Open Terminal
 
-# Command to run camera calibration file
+## Command to run camera calibration file
 python3 Camera_calibration.py
 
-# Command to run object estimation file
+## Command to run object estimation file
 python3 Object_Pose_Estimation.py
 
-# Command to run camera pose file
+## Command to run camera pose file
 python3 Camera_pose.py
 
-# Command to run the robot calibration file
+## Command to run the robot calibration file
 python3 Robot_calibration.py
 
