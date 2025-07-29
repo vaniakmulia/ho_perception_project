@@ -1,42 +1,40 @@
-# HO-Perception-Project
+# Hands-On Perception Project: Real-time 2D Pose Estimation for Robot Parts Picking
 
 ## Overview
-This project focuses on developing a real-time 2d pose estimation system for robots and its applications in automated parts-picking operations. The project involves camera calibration, robot calibration, object detection and pose estimation algorithms.
-### Getting Started
+This project focuses on developing a real-time 2D pose estimation system for robots and its applications in automated parts-picking operations. The project involves camera calibration, robot calibration, object detection and pose estimation algorithms.
 
-### Prerequisites
+## Dependencies
 Required libraries  
 OpenCV, version: 4.9.0  
 NumPy,  version: 1.24.4  
 Matplotlib, version: 3.7.5  
 
-### How to run the Project
+## Running the Project
 The project can be run in two ways:
-## Through VS Code
+
+### Through VS Code
 Open the project folder into VS code and run the file.
 
-## Through Ubuntu Terminal
-Navigate to the project directory
+### Through Ubuntu Terminal
+Navigate to the project directory, and run the following command lines:
 
-Open Terminal
-
-### Command to run camera calibration file
+* Command to run camera calibration file
 ```bash
-python3 Camera_calibration.py
+python Camera_calibration.py
 ```
-## Command to run the robot calibration file
+* Command to run the robot calibration file
 ```bash
-python3 Robot_calibration.py
+python Robot_calibration.py
 ```
 
-## Command to run camera pose file
+* Command to run camera pose file
 ```bash
-python3 Camera_pose.py
+python Camera_pose.py
 ```
 
-### Command to run object pose estimation file
+* Command to run object pose estimation file
 ```bash
-python3 Object_Pose_Estimation.py
+python Object_Pose_Estimation.py
 ```
 
 ## Contents
@@ -69,3 +67,7 @@ This file contains the rotation vectors obtained from the camera pose program.
 ### 9. `All_tvecs.npy`
 This file contains the translation vectors obtained from the camera pose program.
 
+## Additional Documentations
+The full report for this project can be found in [this link](https://drive.google.com/file/d/1UpC2aGPiUXZcIIo9vhPOsOEys6W6u9OO/view?usp=sharing).
+
+A demo video of this project can be found in [this link](https://drive.google.com/file/d/1xyQID6AUmRy6sy4MzDcYvVvn1spNiaCo/view?usp=sharing).
